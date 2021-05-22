@@ -1,0 +1,11 @@
+name: YAMLNPC
+main: live.squi.yamlnpc.YAMLNPC
+version: 1.0
+api-version: 1.16
+depend:
+  - NPCLibPlugin
+commands:
+  npc:
+    usage: /<command> (subcommand)
+    description: YAMLNPC commands
+    permission: yamlnpc.manage
