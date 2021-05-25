@@ -16,10 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class YAMLNPC extends JavaPlugin implements Listener {
@@ -71,24 +68,10 @@ public class YAMLNPC extends JavaPlugin implements Listener {
         }
     }
 
-    private void sendDialog(Player player, List<String> dialog, int index) {
-        if (!player.isOnline())
-            return;
-        try {
-            player.sendMessage(dialog.get(index));
-        } catch (IndexOutOfBoundsException e) {
-            return; // if the dialog is updated during the chat, the index will go out of bounds
-        }
-        if (index + 1 < dialog.size())
-            Bukkit.getScheduler()
-                    .runTaskLater(this, () -> sendDialog(player, dialog, index + 1), 40);
-    }
-
     @EventHandler
     public void onNPCInteract(NPCInteractEvent event) {
-        NPCMeta meta = npcData.get(idToName.get(event.getNPC().getId()));
-        if (meta.getDialog().size() > 0)
-            sendDialog(event.getWhoClicked(), meta.getDialog(), 0);
+        ArrayList<String> dialog = npcData.get(idToName.get(event.getNPC().getId())).getDialog();
+        event.getWhoClicked().sendMessage(dialog.get((int) Math.round(Math.random() * (dialog.size() - 1))));
     }
 
     @EventHandler
